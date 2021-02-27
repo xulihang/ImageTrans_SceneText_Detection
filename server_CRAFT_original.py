@@ -12,10 +12,6 @@ import keras_ocr
 @route('/detect', method='POST')
 def detect():
     upload = request.files.get('upload')
-    recognize = request.forms.get('recognize')
-    do_recognition=False
-    if recognize=="on":
-        do_recognition=True        
     name, ext = os.path.splitext(upload.filename)
     print(ext.lower())
     if ext.lower() not in ('.png','.jpg','.jpeg'):
@@ -31,7 +27,7 @@ def detect():
     upload.save(file_path)        
     ret = {}
     images = [keras_ocr.tools.read(file_path)]
-    prediction_groups = pipeline.recognize(images,do_recognition=do_recognition)
+    prediction_groups = pipeline.recognize(images)
     prediction=prediction_groups[0]
     text_lines=[]
     print(prediction)
